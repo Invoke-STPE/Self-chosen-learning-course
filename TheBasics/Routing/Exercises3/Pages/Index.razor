@@ -1,0 +1,25 @@
+﻿@page "/"
+@page "/{Name}"
+
+<h1>Hello, @_userName</h1>
+
+This app greets an user if parameter passed in URL.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+
+@code {
+    [Parameter]
+    public string Name { get; set; }
+    private string _userName = "Unkown";
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (!String.IsNullOrWhiteSpace(Name))
+        {
+            _userName = Name;
+        }
+    }
+}
