@@ -1,0 +1,28 @@
+﻿@page "/counter"
+@page "/counter/{StarterValue:int}"
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    [Parameter]
+    public int StarterValue { get; set; }
+    private int currentCount = 0;
+
+    // This method runs once the parameters have been initalized, a constructor runs before parameters have been assigned values.
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        // Q: Why no check if StarterValue has a value?
+        // A: Because once the parameters been initialized, if no value is passed in StarterValue is initialized as a default value.
+        currentCount = StarterValue;
+    }
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
