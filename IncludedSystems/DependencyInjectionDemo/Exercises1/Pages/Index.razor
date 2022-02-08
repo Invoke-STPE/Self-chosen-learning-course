@@ -1,0 +1,46 @@
+﻿@page "/"
+@using Exercises1.Data
+@inject IWeatherForecastService ForeCastService
+This exercises is about creating dependency Injection for a blazor page.
+
+
+<h1>Weather Data the next 7 days!</h1>
+
+@if (forecasts == null)
+{
+    <p>Loading forecasts.</p>
+} else
+{
+<div class="row">
+
+@foreach (var forecast in forecasts)
+{
+    <div class="col-lg-2">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">@forecast.Date.DayOfWeek</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@forecast.Summary</h6>
+                <p class="card-text" style="font-size:2rem">@forecast.TemperatureC</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+    </div>
+ }
+ 
+    </div>
+}
+
+
+@code {
+    private WeatherForecast[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForeCastService.GetForecastAsync(DateTime.Now, 7);
+    }
+}
+
+
+
+
