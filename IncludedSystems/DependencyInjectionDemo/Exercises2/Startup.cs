@@ -1,4 +1,4 @@
-using Exercises1.Data;
+using Exercises2.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Exercises1
+namespace Exercises2
 {
     public class Startup
     {
@@ -28,7 +28,8 @@ namespace Exercises1
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddTransient<IWeatherForecastService, WeatherForecastService>();
+            services.AddTransient<WeatherForecastService>();
+            services.AddTransient<IDataAccess, DataAccess>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
