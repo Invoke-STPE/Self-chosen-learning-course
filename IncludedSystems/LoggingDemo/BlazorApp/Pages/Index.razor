@@ -1,0 +1,20 @@
+﻿@page "/"
+@using Microsoft.Extensions.Logging 
+@inject ILogger<Index> log
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+
+@code {
+    
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        int id = 25;
+        log.LogInformation("Just opened up the Main page for id #{userId} (That was id {id})", id, id);
+    }
+}
