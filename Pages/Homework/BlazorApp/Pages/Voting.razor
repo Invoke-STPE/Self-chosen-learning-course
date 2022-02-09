@@ -1,0 +1,23 @@
+﻿@page "/vote"
+@layout ExperimentalLayout
+<h3>Vote for your candidate!</h3>
+<div class="row">
+    <div class="col-lg-6">
+        <h5 >Candidate 1</h5>
+        <img style="width:25rem" src="Images/undraw_profile_pic_ic5t.png" />
+        <br />
+        <button class="text-center btn btn-primary" @onclick="VoteCandidate1">Vote</button>
+        <p>@condidate1Votes</p>
+    </div>
+    <div class="col-lg-6">
+        <h5>Candidate 2</h5>
+        
+        <img style="width:25rem" src="Images/undraw_profile_pic_ic5t.png" />
+        <br />
+        <button class="text-center btn btn-success" @onclick="VoteCandidate2">Vote</button>
+        <p>@condidate2Votes</p>
+    </div>
+</div>
+@code {
+
+}
