@@ -1,0 +1,29 @@
+﻿@page "/counter"
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<p @="IncrementCount">
+    @(i + j) 
+    @{
+        var k = j * i;
+    }
+    @k
+
+    @("<h1>This is a big test</h1>")
+    @((MarkupString)"<h1>This is a big test</h1>")
+</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private int currentCount = 0;
+    private int i = 5;
+    private int j = 2;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
