@@ -1,0 +1,36 @@
+﻿@page "/fetchdata"
+
+@using Exercise1.Data
+@inject WeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+       
+        @foreach (var forecast in forecasts)
+        {
+            <div class="col-lg-2">
+
+                <WeatherComponent Date="@forecast.Date" Temperature="@forecast.TemperatureC" Summary="@forecast.Summary"></WeatherComponent>
+            </div>
+        }
+                
+    </div>
+}
+
+@code {
+    private WeatherForecast[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+}

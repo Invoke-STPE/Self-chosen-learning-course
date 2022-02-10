@@ -1,0 +1,42 @@
+﻿
+<div class="card" style="width: 18rem;">
+    <img src="@image" class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">@Date.DayOfWeek</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@Summary</h6>
+        <h4 class="card-text">@Temperature</h4>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Summary { get; set; }
+    [Parameter]
+    public int Temperature { get; set; }
+    [Parameter]
+    public DateTime Date { get; set; }
+
+    private string image;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if(Summary == "Freezing" || Summary == "Bracing" || Summary == "Chilly")
+        {
+            image = "Images/cold.png";
+        }
+        if (Summary == "Cool" || Summary == "Mild" || Summary == "Warm")
+        {
+            image = "Images/pleasent.png";
+        }
+        if (Summary == "Balmy" || Summary == "Hot" || Summary == "Sweltering" || Summary == "Scorching")
+        {
+            image = "Images/Hot.png";
+        }
+    }
+
+
+}
