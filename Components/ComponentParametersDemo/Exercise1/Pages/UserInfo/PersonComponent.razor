@@ -1,0 +1,11 @@
+﻿<h2>@Person.FirstName @Person.LastName</h2>
+@AddressFragment
+
+@code {
+
+    [Parameter]
+    public PersonModel Person { get; set; }
+    [Parameter]
+    public RenderFragment AddressFragment { get; set; }
+
+}
