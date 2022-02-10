@@ -1,0 +1,23 @@
+﻿<div class="row">
+    <div class="col-6">
+        <button class="btn btn-primary mx-3" @onclick="ThumbsUp"><span class="oi-thumb-up"></span>Approve</button>
+    </div>
+    <div class="col-6">
+        <button class="btn btn-danger mx-3" @onclick="ThumbsDown"><span class="oi-thumb-down"></span>Reject</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<string> OnVoted { get; set; }
+
+    private void ThumbsUp()
+    {
+        OnVoted.InvokeAsync("Approve");
+    }
+    private void ThumbsDown()
+    {
+        OnVoted.InvokeAsync("Reject");
+    }
+
+}

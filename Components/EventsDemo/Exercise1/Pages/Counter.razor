@@ -1,0 +1,49 @@
+﻿@page "/counter"
+
+
+@if (pageApprove)
+{
+    <h2 class="text-success">This page has been approved</h2>
+}
+@if (pageReject)
+{
+    <h2 class="text-danger">This page has been rejected</h2>
+}
+
+
+<h1>Counter</h1>
+
+
+
+
+<Vote OnVoted="HandleOnVote">
+</Vote>
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private bool pageApprove = false;
+    private bool pageReject = false;
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private void HandleOnVote(string result)
+    {
+        switch (result)
+        {
+            case "Approve":
+                pageApprove = true;
+                break;
+            case "Reject":
+                pageReject = true;
+                break;
+            default:
+                break;
+        }
+    }
+}
