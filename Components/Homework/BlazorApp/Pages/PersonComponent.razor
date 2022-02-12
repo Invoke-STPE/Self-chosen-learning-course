@@ -1,0 +1,24 @@
+﻿<div>@Person.Fullname</div> <button class="btn btn-primary" @onclick="generateAlternativeNames">Fix</button>
+
+@code {
+    [Parameter]
+    public PersonModel Person { get; set; }
+    [Parameter]
+    public EventCallback<Dictionary<int, List<string>>> EventCallback { get; set; }
+
+    private void generateAlternativeNames()
+    {
+        Dictionary<int, List<string>> alternativeNames = new Dictionary<int, List<string>>();
+
+        alternativeNames.Add(Person.Id, new List<string>
+            {
+                $"{Person.LastName} {Person.FirstName}",
+                $"{Person.FirstName}.{Person.LastName}",
+                $"{Person.FirstName}-{Person.LastName}",
+                $"{Person.LastName}.{Person.FirstName}"
+            });
+
+        EventCallback.InvokeAsync(alternativeNames);
+
+    }
+    }

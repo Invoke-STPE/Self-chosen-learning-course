@@ -1,0 +1,39 @@
+﻿@page "/users"
+<h3>Users</h3>
+<div class="row">
+
+    <div class="col-6">
+        <ul>
+            @foreach (var person in people)
+            {
+                <li><PersonComponent Person="person" EventCallback="HandleAlternativeNames"></PersonComponent></li>
+            }
+        </ul>
+    </div>
+
+    @if(alternativeNames.Count > 0)
+    {
+        <div class="col-6">
+            <h3>Check out these alternative names!</h3>
+            <ul>
+                @foreach (var person in alternativeNames)
+                {
+                    @foreach (var name in person.Value)
+                    {
+                        <li @onclick="( () => updateName(person.Key, name))">@name</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+
+</div>
+@code {
+    private Dictionary<int, List<string>> alternativeNames = new Dictionary<int, List<string>>();
+
+
+    public void HandleAlternativeNames(Dictionary<int, List<string>> names)
+    {
+        alternativeNames = names;
+    }
+}
