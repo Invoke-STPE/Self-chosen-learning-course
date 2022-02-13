@@ -1,0 +1,23 @@
+﻿<h3>Create User</h3>
+
+<p>
+    @resultForm
+</p>
+
+<EditForm @bind-value="@person" OnValidSubmit="HandleValidSubmit">
+    <InputText id="firstName" @bind-Value="person.FirstName"></InputText>
+    <InputText id="lastName" @bind-Value="person.LastName"></InputText>
+    <InputNumber id="age" @bind-Value="person.Age"></InputNumber>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private PersonModel person = new PersonModel();
+    private string resultForm = "";
+
+    private void HandleValidSubmit()
+    {
+        resultForm = $"New user {person.FirstName}, {person.LastName} was created!";
+    }
+
+}
