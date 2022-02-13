@@ -1,0 +1,38 @@
+﻿@page "/directory"
+<h3>UserDirectoryComponent</h3>
+
+@if (users.Count > 0) { 
+    @foreach (UserModel user in users)
+    {
+        <UserComponent FirstName="@user.FirstName" LastName="@user.LastName"></UserComponent>
+    }
+}
+
+@code {
+    private List<UserModel> users;
+
+    public UserDirectoryComponent()
+    {
+        users = new List<UserModel>()
+        {
+            new UserModel
+            {
+                FirstName = "Steven",
+                LastName = "Pedersen",
+
+            },
+            new UserModel
+            {
+                FirstName = "Mike",
+                LastName = "Brandt",
+
+            },
+            new UserModel
+            {
+                FirstName = "Kevin",
+                LastName = "Brandt",
+
+            }
+        };
+    }
+}

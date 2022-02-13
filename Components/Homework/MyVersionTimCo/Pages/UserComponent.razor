@@ -8,12 +8,15 @@
 @code {
     private string fullName = "";
     private bool showFix = false;
+    [Parameter]
     public string FirstName { get; set; }
+    [Parameter]
     public string LastName { get; set; }
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+        fullName = $"{FirstName} {LastName}";
     }
 
     private void NameUpdated(string newName)

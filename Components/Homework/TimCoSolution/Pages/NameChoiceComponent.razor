@@ -1,0 +1,42 @@
+﻿<p>
+    @normalType
+</p>
+<p>
+    @reservedType
+</p>
+<p>
+    @initialType
+</p>
+<p>
+    @emailType
+</p>
+
+@code {
+    private string normalType = "";
+    private string reservedType = "";
+    private string initialType = "";
+    private string emailType = "";
+
+    [Parameter]
+    public string FirstName { get; set; }
+    [Parameter]
+    public string LastName { get; set; }
+    [Parameter]
+    public EventCallback<string> OnNameUpdate { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        normalType = $"{FirstName} {LastName}";
+        reservedType = $"{LastName} {FirstName}";
+        initialType = $"{FirstName} {LastName.Substring(0,1)}";
+        emailType = $"{FirstName.Substring(0, 1)} {LastName}";
+    }
+
+    private void UpdateName(string name)
+    {
+        OnNameUpdate.InvokeAsync(name);
+    }
+
+}
