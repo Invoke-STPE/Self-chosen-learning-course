@@ -1,0 +1,87 @@
+﻿@page "/cascadedemo"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+
+<h3>Cascade Demo</h3>
+
+<EditForm Model="@cascade">
+    <select @onchange="HandleFirstDropDownChange">
+        <option value="">Select Media Type.</option>
+        @foreach (var media in mediaTypes)
+        {
+            <option value="@media.Key">@media.Value</option>
+        }
+    </select>
+    @if (subTypes.Count > 0)
+    {
+        <select id="secondDropDown" @onchange="HandleSecondDropDownChange">
+            <option value="">Select SubType.</option>
+            @foreach (var subtype in subTypes)
+            {
+                <option value="@subtype.Key">@subtype.Value</option>
+            }
+        </select>
+    }
+</EditForm>
+
+@code {
+    private CascadeModel cascade = new CascadeModel();
+    private Dictionary<int, string> mediaTypes = new Dictionary<int, string>(); // Movie, tv, books
+    private Dictionary<int, string> subTypes = new Dictionary<int, string>(); // Sub types of media types
+
+    public CascadeDemo()
+    {
+        mediaTypes.Add(1, "Movies");
+        mediaTypes.Add(2, "TV Shows");
+        mediaTypes.Add(3, "Books");
+    }
+
+    private void HandleSecondDropDownChange(ChangeEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(e.Value.ToString()))
+        {
+            return;
+        }
+        cascade.SecondID = int.Parse(e.Value.ToString());
+    }
+
+    private async Task HandleFirstDropDownChange(ChangeEventArgs e)
+    {
+        await JSRuntime.InvokeAsync<object>("ResetSecondDropDown", new object[0]);
+
+        if (string.IsNullOrWhiteSpace(e.Value.ToString()))
+        {
+            cascade.SecondID = 0;
+            subTypes = new Dictionary<int, string>(); // Sub types of media types
+            return;
+        }
+        
+        cascade.FirstId = int.Parse(e.Value.ToString());
+        cascade.SecondID = 0;
+
+        switch (cascade.FirstId)
+        {
+            case 1:
+                subTypes = new Dictionary<int, string>();
+                subTypes.Add(1, "Top Gun");
+                subTypes.Add(2, "Die Hard");
+                subTypes.Add(3, "Star Wars");
+                break;
+            case 2:
+                subTypes = new Dictionary<int, string>();
+                subTypes.Add(4, "The Pretender");
+                subTypes.Add(5, "Warehouse 13");
+                subTypes.Add(6, "Eureka");
+                break;
+            case 3:
+                subTypes = new Dictionary<int, string>();
+                subTypes.Add(7, "Finish");
+                subTypes.Add(8, "Linchpin");
+                subTypes.Add(9, "The Phoenix Project");
+                break;
+            default:
+                subTypes = new Dictionary<int, string>();
+                break;
+        }
+    }
+}

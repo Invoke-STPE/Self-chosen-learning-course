@@ -1,0 +1,81 @@
+﻿@page "/cascade"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+<h3>Entertainment Component</h3>
+
+<EditForm Model="@entertainment">
+    <select @onchange="HandleFirstDropDownChange">
+        <option value="">Select a favorite.</option>
+        @foreach (var media in mediaTypes)
+        {
+            <option value="@media.Key">@media.Value</option>
+        }
+    </select>
+    @if (subTypes.Count > 0)
+    {
+        <select id="secondDropDown" @onchange="HandleSecondDropDownChange">
+            <option value="">Select a favorite.</option>
+            @foreach (var subType in subTypes)
+            {
+                <option value="@subType.Key">@subType.Value</option>
+            }
+        </select>
+    }</EditForm>
+
+@code {
+    private MediaModel entertainment = new MediaModel();
+    private Dictionary<int, string> mediaTypes = new Dictionary<int, string>();
+    private Dictionary<int, string> subTypes = new Dictionary<int, string>();
+
+    public EntertainmentComponent()
+    {
+        mediaTypes.Add(1, "Movie");
+        mediaTypes.Add(2, "TV Shows");
+        mediaTypes.Add(3, "Books");
+    }
+
+    private async Task HandleFirstDropDownChange(ChangeEventArgs e)
+    {
+        await JSRuntime.InvokeAsync<object>("resetDropDown", new object[0]);
+        string valueAsAString = e.Value.ToString();
+        if (String.IsNullOrWhiteSpace(valueAsAString))
+        {
+            entertainment.SecondID = 0;
+            subTypes = new Dictionary<int, string>();
+            return;
+        }
+        int valueAsANumber = int.Parse(e.Value.ToString());
+        subTypes = new Dictionary<int, string>();
+        switch (valueAsANumber)
+        {
+            case 1:
+                subTypes.Add(1, "Green Street Elite");
+                subTypes.Add(2, "Sherk");
+                subTypes.Add(3, "Love Never Dies");
+                break;
+            case 2:
+                subTypes.Add(4, "Sons Of Anarchy");
+                subTypes.Add(5, "Suits");
+                subTypes.Add(6, "The Office");
+                break;
+            case 3:
+                subTypes.Add(7, "Finish");
+                subTypes.Add(8, "Professional WordPress");
+                subTypes.Add(9, "PHP: A Visual Quickstart");
+                break;
+            default:
+                subTypes = new Dictionary<int, string>();
+                break;
+        }
+    }
+    private void HandleSecondDropDownChange(ChangeEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(e.Value.ToString()))
+        {
+            return;
+        }
+
+        entertainment.SecondID = int.Parse(e.Value.ToString());
+    }
+
+}
