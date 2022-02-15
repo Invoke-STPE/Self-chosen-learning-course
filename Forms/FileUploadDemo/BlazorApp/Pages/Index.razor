@@ -1,0 +1,49 @@
+﻿@page "/"
+@using System.IO
+
+<h1>Hello, world!</h1>
+
+<div class="drag-drop-zone">
+    <InputFile OnChange="ViewFile" />
+    @status
+</div>
+
+@if(fileName != null)
+{
+    <h3>@fileName</h3>
+    <pre>@fileTextContents</pre>
+}
+
+@code {
+    const string DefaultStatus = "Drop a text file here to view it, or click to choose a file";
+    const int MaxFileSize = 5 * 1024 * 1024; // Maximum Size of 5MB
+    string status = DefaultStatus;
+
+    string fileName;
+    string fileTextContents;
+
+    async Task ViewFile(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+        if (file == null)
+        {
+            return;
+        }
+        else if (file.Size > MaxFileSize)
+        {
+            status = $"Thats' too big. Max file sie is { MaxFileSize } bytes";
+        }
+        else
+        {
+            status = "Loading...";
+
+            using (var reader = new StreamReader(file.Data))
+            {
+                fileTextContents = await reader.ReadToEndAsync();
+                fileName = file.Name;
+            }
+
+            status = DefaultStatus;
+        }
+    }
+}
