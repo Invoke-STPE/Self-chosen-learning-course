@@ -1,0 +1,70 @@
+﻿@page "/cascadedemo"
+<h3>Cascade Component</h3>
+
+<EditForm Model="cascade">
+    <select @onchange="HandleGenreChange">
+        <option value="">Choose a genre</option>
+        @foreach (var genre in genres)
+        {
+            <option value="@genre.Key">@genre.Value</option>
+        }
+    </select>
+    @if (movies.Count > 0)
+    {
+        <select>
+            <option value="">Choose a movie</option>
+            @foreach (var movie in movies)
+            {
+                <option value="@movie.Key">@movie.Value</option>
+            }
+        </select>
+    }
+</EditForm>
+
+@code {
+    private CascadeModel cascade = new CascadeModel();
+    private Dictionary<int, string> genres = new Dictionary<int, string>();
+    private Dictionary<int, string> movies = new Dictionary<int, string>();
+
+    public CascadeComponent()
+    {
+        genres.Add(1, "Action");
+        genres.Add(2, "Romance");
+        genres.Add(3, "Comedy");
+    }
+
+    private void HandleGenreChange(ChangeEventArgs e)
+    {
+        string valueAsAString = e.Value.ToString();
+
+        if(String.IsNullOrWhiteSpace(valueAsAString))
+        {
+            movies = new Dictionary<int, string>();
+            return;
+        }
+
+        int valueAsANumber = int.Parse(valueAsAString);
+        movies = new Dictionary<int, string>();
+        switch (valueAsANumber)
+        {
+            case 1:
+                movies.Add(1, "Die Hard");
+                movies.Add(2, "Terminator");
+                movies.Add(3, "Rambo");
+                break;
+            case 2:
+                movies.Add(4, "Love");
+                movies.Add(5, "Love Is Love");
+                movies.Add(6, "Romantic Love");
+                break;
+            case 3:
+                movies.Add(7, "Adam Sandler in...");
+                movies.Add(8, "To For en");
+                movies.Add(9, "To for alle");
+                break;
+            default:
+                break;
+        }
+    }
+
+}
