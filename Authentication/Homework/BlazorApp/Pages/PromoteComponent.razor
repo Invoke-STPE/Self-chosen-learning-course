@@ -1,0 +1,59 @@
+﻿@page "/promote"
+@attribute [Authorize]
+
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Configuration
+@inject RoleManager<IdentityRole> roleManager
+@inject UserManager<IdentityUser> userManger
+@inject AuthenticationStateProvider authenticate
+@inject IConfiguration config
+
+<h3>User Promoted</h3>
+<p>An user have been promoted to @rank</p>
+
+@code {   
+    private string rank = "";
+    protected override async Task OnParametersSetAsync()
+    {
+        await PromoteUser();
+    }
+
+    private async Task PromoteUser()
+    {
+        const string administrator = "Administrator";
+        const string employee = "Employee";
+        string[] Roles = { administrator, employee };
+
+        @foreach (var role in Roles)
+        {
+            var roleExists = await roleManager.RoleExistsAsync(role);
+
+            if (roleExists == false)
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+        var user = await userManger.FindByEmailAsync(config.GetValue<string>("AdminUser"));
+        //var user = await userManger.FindByIdAsync(User.Identity.GetUserId());
+        var authenticatedUser = await authenticate.GetAuthenticationStateAsync();
+        var currentUserRoleIsAdmin = authenticatedUser.User.IsInRole(administrator);
+
+
+        if (user != null && currentUserRoleIsAdmin)
+        {
+            await userManger.AddToRoleAsync(user, administrator);
+            rank = "administrator";
+        }
+        else
+        {
+            var employeeUser = await userManger.FindByEmailAsync("steven@gmail.com");
+            if (employeeUser != null)
+            {
+                await userManger.AddToRoleAsync(employeeUser, employee);
+                rank = "employee";
+
+
+            }
+        }
+    }
+}

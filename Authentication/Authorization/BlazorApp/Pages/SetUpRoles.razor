@@ -1,6 +1,7 @@
 ﻿@page "/SetUpRoles"
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.Extensions.Configuration
+
 @inject RoleManager<IdentityRole> roleManager
 @inject UserManager<IdentityUser> userManager
 @inject IConfiguration config
@@ -32,6 +33,7 @@
         }
 
         var user = await userManager.FindByEmailAsync(config.GetValue<string>("AdminUser"));
+        
 
         if(user != null)
         {
