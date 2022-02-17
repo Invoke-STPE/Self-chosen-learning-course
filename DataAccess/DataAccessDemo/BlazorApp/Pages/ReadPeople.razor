@@ -1,0 +1,107 @@
+﻿@page "/readpeople"
+@inject IPersonDataService personData
+<h3>Read People</h3>
+
+@if (people == null)
+{
+    <h4>Loading</h4>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            FirstName
+                        </th>
+                        <th>
+                            LastName
+                        </th>
+                        <th>
+                            Data of Birth
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var person in people)
+                    {
+                        <tr>
+                            <td>@person.Id</td>
+                            <td>@person.FirstName</td>
+                            <td>@person.LastName</td>
+                            <td>@person.DateOfBirth</td>
+                            <td>
+                                <button class="btn btn-primary mx-2" @onclick="(() => UpdatePerson(person.Id) )">
+                                    Update
+                                </button>
+                                @if (idToDelete == person.Id)
+                                {
+                                    <button class="btn btn-danger mx-2" @onclick="(() => DeletePerson(person.Id) )">
+                                        Confirm Delete
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-outline-danger mx-2" @onclick="(() => idToDelete = person.Id )">
+                                        Delete
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            @if (showEditForm)
+                {
+                   <UpdatePerson Id="idToUpdate" OnUpdate="HandleOnUpdate"></UpdatePerson>
+                }
+        </div>
+    </div>
+}
+
+@code {
+    private List<IPersonModel> people;
+    private bool showEditForm = false;
+    private int idToUpdate = 0;
+    private int idToDelete = 0;
+
+    private void UpdatePerson(int id)
+    {
+        idToUpdate = id;
+        showEditForm = true;
+    }
+    private async Task DeletePerson(int id)
+    {
+        await personData.DeletePerson(id);
+        people.Remove(people.Where(p => p.Id == id).FirstOrDefault());
+        idToDelete = 0;
+    }
+
+    private void HandleOnUpdate(IPersonModel person)
+    {
+        showEditForm = false;
+        var p = people.Where(x => x.Id == person.Id).FirstOrDefault();
+
+        if (p != null)
+        {
+            p.FirstName = person.FirstName;
+            p.LastName = person.LastName;
+            p.DateOfBirth = person.DateOfBirth;
+        }
+    }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        people = await personData.ReadPeople();
+    }
+}
