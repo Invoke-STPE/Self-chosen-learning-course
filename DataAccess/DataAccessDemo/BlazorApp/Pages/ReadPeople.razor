@@ -8,6 +8,14 @@
 }
 else
 {
+<EditForm Model="searchQuery" OnSubmit="HandleSearchQuery">
+    <div class="input-group mb-3">
+        <InputText class="form-control" @bind-Value="searchQuery" placeholder="Search persons..." />
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </div>
+</EditForm>
     <div class="row">
         <div class="col-md-8">
             <table class="table table-striped">
@@ -74,6 +82,7 @@ else
     private bool showEditForm = false;
     private int idToUpdate = 0;
     private int idToDelete = 0;
+    private string searchQuery = "";
 
     private void UpdatePerson(int id)
     {
@@ -85,6 +94,14 @@ else
         await personData.DeletePerson(id);
         people.Remove(people.Where(p => p.Id == id).FirstOrDefault());
         idToDelete = 0;
+    }
+
+    private async Task HandleSearchQuery()
+    {
+        if (!String.IsNullOrWhiteSpace(searchQuery))
+        {
+            people = await personData.ReadPeople(searchQuery);
+        } else { people = await personData.ReadPeople(); }
     }
 
     private void HandleOnUpdate(IPersonModel person)

@@ -11,6 +11,8 @@ namespace SupportLibrary.Data
     {
         private List<IPersonModel> people = new List<IPersonModel>();
         private int currentId = 0;
+
+
         public Task CreatePerson(IPersonModel person)
         {
             return Task.Run(() => {
@@ -33,6 +35,12 @@ namespace SupportLibrary.Data
         public Task<IPersonModel> ReadPeople(int id)
         {
             return Task.FromResult(people.Where(x => x.Id == id).FirstOrDefault() ); 
+        }
+        public Task<List<IPersonModel>> ReadPeople(string query)
+        {
+            return Task.FromResult(people.Where(x => x.FirstName.ToLower().Contains(query.ToLower()) || 
+                                                     x.LastName.ToLower().Contains(query.ToLower()))
+                                                     .ToList());
         }
 
         public Task UpdatePerson(IPersonModel person)

@@ -48,5 +48,10 @@ namespace SupportLibrary.Data
         {
             await dataAccess.SaveData("dbo.sp_People_Delete", new { Id = id }, "SQLDB");
         }
+
+        public Task<List<IPersonModel>> ReadPeople(string query)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
