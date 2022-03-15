@@ -1,6 +1,6 @@
 ﻿@page "/"
 @* This is all you need to do to begin using configuration *@
-@inject IConfiguration _config 
+@inject IConfiguration _config
 
 <h1>Hello, world!</h1>
 
@@ -15,11 +15,17 @@
     MySetting Value: @mySubSubSetting
 </p>
 
+<p>
+    Connection String Value: @connectionString
+</p>
+
+
 
 @code {
     string mySetting = "";
     string mySubSetting = "";
     string mySubSubSetting = "";
+    string connectionString = "";
 
     protected override void OnInitialized()
     {
@@ -29,5 +35,8 @@
         mySubSetting = _config.GetValue<string>("MainSetting:SubSetting");
         // You can even read sub sub sections
         mySubSubSetting = _config.GetValue<string>("MainSetting:SubSection:SubSubSetting");
+        // If you do not see anything, then you properly misspelled it.
+        // Reading connection strings are so commenly used, that a buildin short cut is created for it.
+        connectionString = _config.GetConnectionString("Default");
     }
 }
