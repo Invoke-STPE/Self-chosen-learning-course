@@ -1,6 +1,7 @@
 ﻿@page "/"
 @* This is all you need to do to begin using configuration *@
 @inject IConfiguration _config
+@inject IOptions<EmailSettingsOptions> _emailSettingsOptions
 
 <h1>Hello, world!</h1>
 
@@ -19,6 +20,18 @@
     Connection String Value: @connectionString
 </p>
 
+<p>
+    Email Enabled: @emailSettings.EnableEmailSystem <br />
+    Email Timeout: @emailSettings.EmailTimeoutInSeconds <br />
+    Email Servers: 
+    @foreach (string server in emailSettings.EmailServers) 
+    { 
+        @server @:&nbsp; 
+    }
+    <br />
+    Email Admin: @emailSettings.EmailAdmin.FirstName @emailSettings.EmailAdmin.LastName
+</p>
+
 
 
 @code {
@@ -26,6 +39,7 @@
     string mySubSetting = "";
     string mySubSubSetting = "";
     string connectionString = "";
+    EmailSettingsOptions emailSettings = new EmailSettingsOptions();
 
     protected override void OnInitialized()
     {
@@ -38,5 +52,9 @@
         // If you do not see anything, then you properly misspelled it.
         // Reading connection strings are so commenly used, that a buildin short cut is created for it.
         connectionString = _config.GetConnectionString("Default");
+
+        //emailSettings = _config.GetSection("EmailSettings").Get<EmailSettingsOptions>();
+        // This is a better way of using options.
+        emailSettings = _emailSettingsOptions.Value;
     }
 }
