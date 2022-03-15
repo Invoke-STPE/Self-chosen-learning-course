@@ -7,13 +7,27 @@
 <p>
     MySetting Value: @mySetting
 </p>
+<p>
+    MySetting Value: @mySubSetting
+</p>
+
+<p>
+    MySetting Value: @mySubSubSetting
+</p>
 
 
 @code {
     string mySetting = "";
+    string mySubSetting = "";
+    string mySubSubSetting = "";
 
     protected override void OnInitialized()
     {
+        // This is how you read a basic setting.
         mySetting = _config.GetValue<string>("MySetting");
+        // This is how you read a subsetting.
+        mySubSetting = _config.GetValue<string>("MainSetting:SubSetting");
+        // You can even read sub sub sections
+        mySubSubSetting = _config.GetValue<string>("MainSetting:SubSection:SubSubSetting");
     }
 }
