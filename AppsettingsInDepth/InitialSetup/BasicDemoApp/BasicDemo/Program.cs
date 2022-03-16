@@ -22,6 +22,10 @@ namespace BasicDemo
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, builder) =>
                 {
+                    var memCollection = new Dictionary<string, string>
+                    {
+                        {"MainSetting:SubSetting", "SubSetting from dictionary" }
+                    };
                     IHostEnvironment env = hostingContext.HostingEnvironment;
                     builder.Sources.Clear();
                     // How you add jsons file are important
@@ -29,6 +33,10 @@ namespace BasicDemo
                     builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
                     builder.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true); // This is how we get the specific development enviroments.
 
+                    builder.AddJsonFile("custom.json", optional: true, reloadOnChange: true);
+                    builder.AddXmlFile("custom.xml", optional: true, reloadOnChange: true);
+                    builder.AddIniFile("custom.ini", optional: true, reloadOnChange: true);
+                    builder.AddInMemoryCollection(memCollection);
                     if (hostingContext.HostingEnvironment.IsDevelopment())
                     {
                         // This will look after usersecrets, and add if it's true.

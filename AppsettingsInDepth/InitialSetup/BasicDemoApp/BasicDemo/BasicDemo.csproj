@@ -5,4 +5,13 @@
     <UserSecretsId>cfda3985-c28c-47c8-81bb-6d34ef6b737e</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="custom.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="custom.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
