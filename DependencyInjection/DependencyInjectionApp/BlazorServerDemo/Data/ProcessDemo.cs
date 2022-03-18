@@ -7,9 +7,9 @@ namespace BlazorServerDemo.Data
 {
     public class ProcessDemo
     {
-        private readonly Demo demo;
+        private readonly IDemo demo;
 
-        public ProcessDemo(Demo demo)
+        public ProcessDemo(IDemo demo)
         {
             this.demo = demo;
         }
@@ -19,7 +19,7 @@ namespace BlazorServerDemo.Data
             return demo.StartupTime.Month switch
             {
                 1 => 31,
-                2 => 28,
+                2 => (demo.StartupTime.Year % 4 == 0) ? 29 : 28,
                 3 => 31,
                 4 => 30,
                 5 => 31,

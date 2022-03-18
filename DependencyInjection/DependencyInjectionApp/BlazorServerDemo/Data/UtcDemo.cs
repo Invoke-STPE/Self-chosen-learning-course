@@ -5,12 +5,17 @@ using System.Threading.Tasks;
 
 namespace BlazorServerDemo.Data
 {
-    public class Demo : IDemo, ILocalDemo
+    public class UtcDemo : IDemo, IUtcDemo
     {
         public DateTime StartupTime { get; init; }
-        public Demo()
+        public UtcDemo()
         {
-            StartupTime = DateTime.Now;
+            StartupTime = DateTime.UtcNow;
+        }
+
+        public void ThisIsAMethodOnlyForLocal()
+        {
+            
         }
     }
 }

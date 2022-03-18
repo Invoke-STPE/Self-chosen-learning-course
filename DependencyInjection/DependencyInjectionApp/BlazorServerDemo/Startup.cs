@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -31,8 +32,10 @@ namespace BlazorServerDemo
             services.AddSingleton<WeatherForecastService>();
             // Never singletons with databases
             // Singletons are good for app configurations
-            services.AddScoped<Demo>();
-            services.AddScoped<ProcessDemo>();
+            services.AddDemoInfo();
+            services.TryAddTransient<IDemo, Demo>();
+            services.TryAddEnumerable(ServiceDescriptor.Transient<IDemo, Demo>());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
