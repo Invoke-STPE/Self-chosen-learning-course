@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,13 +10,18 @@ namespace BlazorServerDemo.Data
     {
         private readonly IDemo demo;
 
-        public ProcessDemo(IDemo demo)
+        // public ProcessDemo(IServiceProvider service) // IServiceProvider provides ALL of the applications services
+
+        public ProcessDemo(IDemo demo) // IServiceProvider provides ALL of the applications services
         {
+            // Always try to avoid the IServiceProvider pattern, it is an anti pattern
+            // And it makes unit testing harder.
             this.demo = demo;
         }
 
         public int GetDaysInMonth()
         {
+            IDemo demo = service.GetRequiredService<IDemo>();
             return demo.StartupTime.Month switch
             {
                 1 => 31,

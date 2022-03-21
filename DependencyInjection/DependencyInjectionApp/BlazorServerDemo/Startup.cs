@@ -33,8 +33,8 @@ namespace BlazorServerDemo
             // Never singletons with databases
             // Singletons are good for app configurations
             services.AddDemoInfo();
-            services.TryAddTransient<IDemo, Demo>();
-            services.TryAddEnumerable(ServiceDescriptor.Transient<IDemo, Demo>());
+            //services.TryAddTransient<IDemo, Demo>();
+            //services.TryAddEnumerable(ServiceDescriptor.Transient<IDemo, Demo>());
 
         }
 
